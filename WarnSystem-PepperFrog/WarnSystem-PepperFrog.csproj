@@ -83,25 +83,25 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Commands\Client\WarnsCommand.cs" />
+        <Compile Include="Commands\RemoteAdmin\AddWarnCommand.cs" />
+        <Compile Include="Commands\RemoteAdmin\GetWarnCommand.cs" />
+        <Compile Include="Commands\RemoteAdmin\RemoveWarnCommand.cs" />
+        <Compile Include="Commands\RemoteAdmin\WarnCommand.cs" />
+        <Compile Include="Config.cs" />
+        <Compile Include="Configs\WarnCommandConfig.cs" />
+        <Compile Include="Models\Hint.cs" />
+        <Compile Include="Models\Warn.cs" />
+        <Compile Include="Models\WarnCollection.cs" />
+        <Compile Include="Plugin.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
-        <Compile Include="Properties\Commands\Client\WarnsCommand.cs" />
-        <Compile Include="Properties\Commands\RemoteAdmin\AddWarnCommand.cs" />
-        <Compile Include="Properties\Commands\RemoteAdmin\GetWarnCommand.cs" />
-        <Compile Include="Properties\Commands\RemoteAdmin\RemoveWarnCommand.cs" />
-        <Compile Include="Properties\Commands\RemoteAdmin\WarnCommand.cs" />
-        <Compile Include="Properties\Config.cs" />
-        <Compile Include="Properties\Configs\WarnCommandConfig.cs" />
-        <Compile Include="Properties\Models\Hint.cs" />
-        <Compile Include="Properties\Models\Warn.cs" />
-        <Compile Include="Properties\Models\WarnCollection.cs" />
-        <Compile Include="Properties\Plugin.cs" />
-        <Compile Include="Properties\Translation.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="Properties\stylecop.json" />
+        <Compile Include="Translation.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="stylecop.json" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
