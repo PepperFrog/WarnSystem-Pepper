@@ -44,13 +44,13 @@ namespace WarnSystem.Commands.RemoteAdmin
         /// Gets or sets the response to send when no warns are found for the user specified.
         /// </summary>
         [Description("The response to send when no warns are found for the user specified.")]
-        public string NoWarnsFound { get; set; } = "No warns found for the specified user.";
+        public string NoWarnsFound { get; set; } = Plugin.Instance.Translation.NoWarnsFound ?? "No warns found for the specified user.";
 
         /// <summary>
         /// Gets or sets the response to send when a warn is successfully deleted.
         /// </summary>
         [Description("The response to send when a warn is successfully deleted.")]
-        public string SuccessResponse { get; set; } = "Deleted Warn:\n{0}";
+        public string SuccessResponse { get; set; } = Plugin.Instance.Translation.SuccessResponseRemove ?? "Deleted Warn:\n{0}";
 
         /// <summary>
         /// Gets or sets the permission required to use this command.
@@ -62,7 +62,7 @@ namespace WarnSystem.Commands.RemoteAdmin
         /// Gets or sets the response to send to the user when they lack the <see cref="RequiredPermission"/>.
         /// </summary>
         [Description("The response to send to the user when they lack the required permission.")]
-        public string PermissionDeniedResponse { get; set; } = "You do not have permission to use this command.";
+        public string PermissionDeniedResponse { get; set; } = Plugin.Instance.Translation.PermissionDeniedResponse ?? "You do not have permission to use this command.";
 
         /// <inheritdoc />
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

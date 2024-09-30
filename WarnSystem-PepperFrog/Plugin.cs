@@ -32,7 +32,7 @@ namespace WarnSystem
         public WarnCollection WarnCollection { get; private set; }
 
         /// <inheritdoc/>
-        public override string Author => "Build";
+        public override string Author => "Build Modified by AntonioFo";
 
         /// <inheritdoc/>
         public override string Name => "WarnSystem";
@@ -41,10 +41,10 @@ namespace WarnSystem
         public override string Prefix => "WarnSystem";
 
         /// <inheritdoc/>
-        public override Version Version { get; } = new(1, 0, 0);
+        public override Version Version { get; } = new(1, 1, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion { get; } = new(5, 2, 2);
+        public override Version RequiredExiledVersion { get; } = new(8, 12, 2);
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -69,20 +69,6 @@ namespace WarnSystem
             database = null;
             Instance = null;
             base.OnDisabled();
-        }
-
-        /// <inheritdoc />
-        public override void OnRegisteringCommands()
-        {
-            base.OnRegisteringCommands();
-            if (Translation.Warns == null)
-            {
-                Log.Error("Warns RA translation is null. Please set it in the translations file. Warns RA command will not load.");
-                return;
-            }
-
-            QueryProcessor.DotCommandHandler.RegisterCommand(Translation.Warns);
-            Commands[typeof(ClientCommandHandler)][typeof(WarnsCommand)] = Translation.Warns;
         }
     }
 }

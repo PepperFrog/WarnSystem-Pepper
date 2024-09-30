@@ -9,35 +9,29 @@ namespace WarnSystem
 {
     using Exiled.API.Interfaces;
     using WarnSystem.Commands.Client;
-    using WarnSystem.Commands.RemoteAdmin;
-    using WarnSystem.Configs;
+    using WarnSystem.Commands.RemoteAdmin;    
 
     /// <inheritdoc />
     public class Translation : ITranslation
     {
-        /// <summary>
-        /// Gets or sets a configurable instance of the <see cref="WarnsCommand"/> command.
-        /// </summary>
-        public WarnsCommand Warns { get; set; } = new();
+        public string MatchesResponse { get; set; } = "\n{0}\n{1} warns dans le casier.";
 
-        /// <summary>
-        /// Gets or sets a configurable instance of the <see cref="AddWarnCommand"/> command.
-        /// </summary>
-        public AddWarnCommand AddWarn { get; set; } = new();
+        public string NoMatchesResponse { get; set; } = "Aucune réponse trouvé.";
 
-        /// <summary>
-        /// Gets or sets a configurable instance of the <see cref="GetWarnCommand"/> command.
-        /// </summary>
-        public GetWarnCommand GetWarn { get; set; } = new();
+        public string PermissionDeniedResponse { get; set; } = "Vous n'avez pas la permission d'utiliser cette commande.";
 
-        /// <summary>
-        /// Gets or sets a configurable instance of the <see cref="RemoveWarnCommand"/> command.
-        /// </summary>
-        public RemoveWarnCommand RemoveWarn { get; set; } = new();
+        public string InvalidPlayerResponse { get; set; } = "Joueur introuvable.";        
 
-        /// <summary>
-        /// Gets or sets an instance of the <see cref="WarnCommandConfig"/> class.
-        /// </summary>
-        public WarnCommandConfig Warn { get; set; } = new();
+        public string NoWarnsFound { get; set; } = "Aucun warn trouvé pour ce joueur.";
+
+        public string ProvideArgumentResponse { get; set; } = "Veuillez donner un nom de joueur.";
+
+        public string SuccessResponseRemove { get; set; } = "Warn suprimé:\n{0}";
+
+        public string SuccessResponseAdd { get; set; } = "Warn ajouté:\n{0}";
+
+        public string OfflineMatchResponse { get; set; } = "Occurence hors-ligne trouvé.\n{0}\n{1} occurences trouvé.";
+
+        public string OnlineMatchResponse { get; set; } = "Occurence trouvé {0} ({1})\n{2}\n{3} occurences trouvé.";
     }
 }

@@ -35,7 +35,7 @@ namespace WarnSystem
         /// <summary>
         /// Gets or sets the warn to display to a player when they are warned.
         /// </summary>
-        public Models.Hint WarnedHint { get; set; } = new("You have been warned\n{0}", 7, false);
+        public Models.Hint WarnedHint { get; set; } = new("Vous avez été averti\n{0}", 7, false);
         
     }
 }

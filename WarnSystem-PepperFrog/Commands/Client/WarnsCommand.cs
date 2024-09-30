@@ -17,6 +17,7 @@ namespace WarnSystem.Commands.Client
     using NorthwoodLib.Pools;
     using WarnSystem.Models;
 
+    [CommandHandler(typeof(ClientCommandHandler))]
     /// <inheritdoc />
     public class WarnsCommand : ICommand
     {
@@ -39,19 +40,19 @@ namespace WarnSystem.Commands.Client
         /// Gets or sets the date format.
         /// </summary>
         [Description("The date format.")]
-        public string DateFormat { get; set; } = "MM-dd-yyyy";
+        public string DateFormat { get; set; } = "dd-MM-yyyy-HH:mm";
 
         /// <summary>
         /// Gets or sets the response to send when no matches are found.
         /// </summary>
         [Description("The response to send when no matches are found.")]
-        public string NoMatchesResponse { get; set; } = "No matches found.";
+        public string NoMatchesResponse { get; set; } = Plugin.Instance.Translation.NoMatchesResponse ?? "No matches found.";
 
         /// <summary>
         /// Gets or sets the response to send to the user when a match has been found.
         /// </summary>
         [Description("The response to send to the user when a match has been found. Available placeholders: {0}:WarnList, {1}:WarnCount")]
-        public string MatchesResponse { get; set; } = "\n{0}\n{1} warns on record.";
+        public string MatchesResponse { get; set; } = Plugin.Instance.Translation.MatchesResponse ?? "\n{0}\n{1} warns on record.";
 
         /// <inheritdoc />
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
