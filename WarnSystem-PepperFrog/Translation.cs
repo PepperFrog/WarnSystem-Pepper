@@ -8,8 +8,6 @@
 namespace WarnSystem
 {
     using Exiled.API.Interfaces;
-    using WarnSystem.Commands.Client;
-    using WarnSystem.Commands.RemoteAdmin;    
 
     /// <inheritdoc />
     public class Translation : ITranslation

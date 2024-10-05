@@ -12,7 +12,6 @@ namespace WarnSystem.Commands.RemoteAdmin
     using System.ComponentModel;
     using System.Linq;
     using CommandSystem;
-    using Exiled.API.Features;
     using Exiled.Permissions.Extensions;
     using WarnSystem.Models;
 

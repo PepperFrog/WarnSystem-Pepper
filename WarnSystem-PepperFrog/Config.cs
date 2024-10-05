@@ -10,7 +10,6 @@ namespace WarnSystem
     using System.ComponentModel;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
-    using WarnSystem.Models;
 
     /// <inheritdoc />
     public class Config : IConfig
@@ -35,7 +34,7 @@ namespace WarnSystem
         /// <summary>
         /// Gets or sets the warn to display to a player when they are warned.
         /// </summary>
-        public Models.Hint WarnedHint { get; set; } = new("Vous avez été averti\n{0}", 7, false);
+        public Models.Hint WarnedHint { get; set; } = new("Vous avez ï¿½tï¿½ averti\n{0}", 7, false);
         
     }
 }
