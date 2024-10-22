@@ -14,7 +14,7 @@ namespace WarnSystem.Commands.RemoteAdmin
 
     /// <inheritdoc />
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class WarnCommand : ParentCommand
+    public class WarnCommand : ParentCommand, IUsageProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WarnCommand"/> class.
@@ -29,6 +29,8 @@ namespace WarnSystem.Commands.RemoteAdmin
 
         /// <inheritdoc />
         public override string Description => "Manages the warns of players.";
+
+        public string[] Usage => new string[] {"a/add g/get", "playername", "Reason And More" };
 
         /// <inheritdoc />
         public sealed override void LoadGeneratedCommands()

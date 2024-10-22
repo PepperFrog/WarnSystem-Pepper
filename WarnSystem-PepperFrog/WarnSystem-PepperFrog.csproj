@@ -104,6 +104,7 @@
     <Compile Include="Commands\RemoteAdmin\WarnCommand.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Models\Hint.cs" />
+    <Compile Include="Models\Issuer.cs" />
     <Compile Include="Models\Warn.cs" />
     <Compile Include="Models\WarnCollection.cs" />
     <Compile Include="Plugin.cs" />
