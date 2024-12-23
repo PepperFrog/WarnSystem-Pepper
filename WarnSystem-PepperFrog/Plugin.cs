@@ -38,10 +38,10 @@ namespace WarnSystem
         public override string Prefix => "WarnSystem";
 
         /// <inheritdoc/>
-        public override Version Version { get; } = new(1, 1, 1);
+        public override Version Version { get; } = new(1, 2, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion { get; } = new(8, 12, 2);
+        public override Version RequiredExiledVersion { get; } = new(9, 0, 1);
 
         /// <inheritdoc/>
         public override void OnEnabled()
