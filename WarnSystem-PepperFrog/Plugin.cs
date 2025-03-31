@@ -44,7 +44,7 @@ namespace WarnSystem
         public override Version Version { get; } = new(1, 0, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion { get; } = new(5, 2, 2);
+        public override Version RequiredExiledVersion { get; } = new(8, 12, 2);
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -80,9 +80,9 @@ namespace WarnSystem
                 Log.Error("Warns RA translation is null. Please set it in the translations file. Warns RA command will not load.");
                 return;
             }
-
+/*
             QueryProcessor.DotCommandHandler.RegisterCommand(Translation.Warns);
-            Commands[typeof(ClientCommandHandler)][typeof(WarnsCommand)] = Translation.Warns;
+            Commands[typeof(ClientCommandHandler)][typeof(WarnsCommand)] = Translation.Warns;*/
         }
     }
 }
