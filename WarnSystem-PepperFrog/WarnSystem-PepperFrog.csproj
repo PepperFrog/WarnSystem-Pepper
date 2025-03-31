@@ -105,6 +105,7 @@
         <Compile Include="Commands\RemoteAdmin\WarnCommand.cs" />
         <Compile Include="Config.cs" />
         <Compile Include="Models\Hint.cs" />
+        <Compile Include="Models\Issuer.cs" />
         <Compile Include="Models\Warn.cs" />
         <Compile Include="Models\WarnCollection.cs" />
         <Compile Include="Plugin.cs" />
@@ -114,9 +115,6 @@
     <ItemGroup>
       <None Include="App.config" />
       <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="stylecop.json" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <Target Name="BeforeBuild">

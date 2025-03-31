@@ -41,7 +41,7 @@ namespace WarnSystem
         public override Version Version { get; } = new(1, 2, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion { get; } = new(9, 0, 1);
+        public override Version RequiredExiledVersion { get; } = new(9, 5, 1);
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -66,20 +66,6 @@ namespace WarnSystem
             database = null;
             Instance = null;
             base.OnDisabled();
-        }
-
-        /// <inheritdoc />
-        public override void OnRegisteringCommands()
-        {
-            base.OnRegisteringCommands();
-            if (Translation.Warns == null)
-            {
-                Log.Error("Warns RA translation is null. Please set it in the translations file. Warns RA command will not load.");
-                return;
-            }
-/*
-            QueryProcessor.DotCommandHandler.RegisterCommand(Translation.Warns);
-            Commands[typeof(ClientCommandHandler)][typeof(WarnsCommand)] = Translation.Warns;*/
         }
     }
 }
