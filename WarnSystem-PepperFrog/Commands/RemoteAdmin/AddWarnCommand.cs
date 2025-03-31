@@ -37,13 +37,13 @@ namespace WarnSystem.Commands.RemoteAdmin
         /// Gets or sets the response to send when an invalid player is specified.
         /// </summary>
         [Description("The response to send when an invalid player is specified.")]
-        public string InvalidPlayerResponse { get; set; } = "Player not found.";
+        public string InvalidPlayerResponse { get; set; } = Plugin.Instance.Translation.InvalidPlayerResponse ?? "Player not found.";
 
         /// <summary>
         /// Gets or sets the response to send when a warn is successfully added.
         /// </summary>
         [Description("The response to send when a warn is successfully added.")]
-        public string SuccessResponse { get; set; } = "Warn added:\n{0}";
+        public string SuccessResponse { get; set; } = Plugin.Instance.Translation.SuccessResponseAdd ?? "Warn added:\n{0}";
 
         /// <summary>
         /// Gets or sets the permission required to use this command.
@@ -55,7 +55,7 @@ namespace WarnSystem.Commands.RemoteAdmin
         /// Gets or sets the response to send to the user when they lack the <see cref="RequiredPermission"/>.
         /// </summary>
         [Description("The response to send to the user when they lack the required permission.")]
-        public string PermissionDeniedResponse { get; set; } = "You do not have permission to use this command.";
+        public string PermissionDeniedResponse { get; set; } = Plugin.Instance.Translation.PermissionDeniedResponse ?? "You do not have permission to use this command.";        
 
         /// <inheritdoc />
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -78,9 +78,20 @@ namespace WarnSystem.Commands.RemoteAdmin
                 response = InvalidPlayerResponse;
                 return false;
             }
+            Issuer issuer;
+            try
+            {
+                issuer = new(Player.Get(sender));
+            }
+            catch (Exception)
+            {
+                Log.Warn("Adding a warn as the server console is not recommended");
+                issuer = new("00000000000000000@steam", "SERVER CONSOLE");
+            }
+
 
             string reason = string.Join(" ", arguments.Skip(1));
-            Warn warn = new Warn(target, Player.Get(sender), reason);
+            Warn warn = new Warn(target, issuer, reason);
             Plugin.Instance.WarnCollection.Insert(warn);
             Plugin.Instance.Config.WarnedHint?.Display(target, warn.Reason);
             response = string.Format(SuccessResponse, warn);

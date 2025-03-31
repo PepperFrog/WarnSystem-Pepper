@@ -35,7 +35,7 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-          <HintPath>..\packages\EXILED-OFFICIAL.8.12.2\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
+          <HintPath>..\packages\ExMod.Exiled.9.5.1\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
           <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
@@ -104,7 +104,6 @@
         <Compile Include="Commands\RemoteAdmin\RemoveWarnCommand.cs" />
         <Compile Include="Commands\RemoteAdmin\WarnCommand.cs" />
         <Compile Include="Config.cs" />
-        <Compile Include="Configs\WarnCommandConfig.cs" />
         <Compile Include="Models\Hint.cs" />
         <Compile Include="Models\Warn.cs" />
         <Compile Include="Models\WarnCollection.cs" />
@@ -120,12 +119,8 @@
       <Content Include="stylecop.json" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">
     </Target>
     <Target Name="AfterBuild">
     </Target>
-    -->
-
 </Project>

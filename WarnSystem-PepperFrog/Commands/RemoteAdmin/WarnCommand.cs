@@ -14,7 +14,7 @@ namespace WarnSystem.Commands.RemoteAdmin
 
     /// <inheritdoc />
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class WarnCommand : ParentCommand
+    public class WarnCommand : ParentCommand, IUsageProvider
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WarnCommand"/> class.
@@ -22,20 +22,22 @@ namespace WarnSystem.Commands.RemoteAdmin
         public WarnCommand() => LoadGeneratedCommands();
 
         /// <inheritdoc />
-        public override string Command => Plugin.Instance.Translation.Warn?.Command ?? "warn";
+        public override string Command => "warn";
 
         /// <inheritdoc />
-        public override string[] Aliases => Plugin.Instance.Translation.Warn?.Aliases ?? Array.Empty<string>();
+        public override string[] Aliases => Array.Empty<string>();
 
         /// <inheritdoc />
-        public override string Description => Plugin.Instance.Translation.Warn?.Description ?? "Manages the warns of players.";
+        public override string Description => "Manages the warns of players.";
+
+        public string[] Usage => new string[] {"a/add g/get", "playername", "Reason And More" };
 
         /// <inheritdoc />
         public sealed override void LoadGeneratedCommands()
         {
-            RegisterCommand(Plugin.Instance.Translation.AddWarn);
-            RegisterCommand(Plugin.Instance.Translation.GetWarn);
-            RegisterCommand(Plugin.Instance.Translation.RemoveWarn);
+            RegisterCommand(new AddWarnCommand());
+            RegisterCommand(new GetWarnCommand());
+            RegisterCommand(new RemoveWarnCommand());
         }
 
         /// <inheritdoc />

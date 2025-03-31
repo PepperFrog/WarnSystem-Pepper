@@ -34,25 +34,25 @@ namespace WarnSystem.Commands.RemoteAdmin
         /// Gets or sets the response to send when no player is specified.
         /// </summary>
         [Description("The response to send when no player is specified.")]
-        public string ProvideArgumentResponse { get; set; } = "Please provide a player name.";
+        public string ProvideArgumentResponse { get; set; } = Plugin.Instance.Translation.ProvideArgumentResponse ?? "Please provide a player name.";
 
         /// <summary>
         /// Gets or sets the response to send when no matches are found.
         /// </summary>
         [Description("The response to send when no matches are found.")]
-        public string NoMatchesResponse { get; set; } = "No matches found.";
+        public string NoMatchesResponse { get; set; } = Plugin.Instance.Translation.NoMatchesResponse ?? "No matches found.";
 
         /// <summary>
         /// Gets or sets the response to send to the user when an offline match has been found.
         /// </summary>
         [Description("The response to send to the user when an offline match has been found.")]
-        public string OfflineMatchResponse { get; set; } = "Offline matches found.\n{0}\n{1} matches found.";
+        public string OfflineMatchResponse { get; set; } = Plugin.Instance.Translation.OfflineMatchResponse ?? "Offline matches found.\n{0}\n{1} matches found.";
 
         /// <summary>
         /// Gets or sets the response to send to the user when an online match has been found.
         /// </summary>
         [Description("The response to send to the user when an online match has been found. Available placeholders: {0}:TargetName, {1}:TargetId, {2}:WarnList, {3}:WarnCount")]
-        public string OnlineMatchResponse { get; set; } = "Matches found for {0} ({1})\n{2}\n{3} matches found.";
+        public string OnlineMatchResponse { get; set; } = Plugin.Instance.Translation.OnlineMatchResponse ?? "Matches found for {0} ({1})\n{2}\n{3} matches found.";
 
         /// <summary>
         /// Gets or sets the permission required to use this command.
@@ -64,7 +64,7 @@ namespace WarnSystem.Commands.RemoteAdmin
         /// Gets or sets the response to send to the user when they lack the <see cref="RequiredPermission"/>.
         /// </summary>
         [Description("The response to send to the user when they lack the required permission.")]
-        public string PermissionDeniedResponse { get; set; } = "You do not have permission to use this command.";
+        public string PermissionDeniedResponse { get; set; } = Plugin.Instance.Translation.PermissionDeniedResponse ?? "You do not have permission to use this command.";
 
         /// <summary>
         /// Gets or sets the format to use when listing the warns of players.
@@ -76,7 +76,7 @@ namespace WarnSystem.Commands.RemoteAdmin
         /// Gets or sets the date format.
         /// </summary>
         [Description("The date format.")]
-        public string DateFormat { get; set; } = "MM-dd-yyyy";
+        public string DateFormat { get; set; } = "dd-MM-yyyy-HH:mm";
 
         /// <inheritdoc />
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

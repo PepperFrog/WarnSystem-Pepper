@@ -29,7 +29,7 @@ namespace WarnSystem.Models
         /// <param name="target">The player to be warned.</param>
         /// <param name="issuer">The player issuing the warn.</param>
         /// <param name="reason">The reason for the warn.</param>
-        public Warn(Player target, Player issuer, string reason)
+        public Warn(Player target, Issuer issuer, string reason)
         {
             Date = DateTime.UtcNow;
             TargetId = target.UserId;

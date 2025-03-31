@@ -9,11 +9,8 @@ namespace WarnSystem
 {
     using System;
     using System.IO;
-    using CommandSystem;
     using Exiled.API.Features;
     using LiteDB;
-    using RemoteAdmin;
-    using WarnSystem.Commands.Client;
     using WarnSystem.Models;
 
     /// <inheritdoc />
@@ -32,7 +29,7 @@ namespace WarnSystem
         public WarnCollection WarnCollection { get; private set; }
 
         /// <inheritdoc/>
-        public override string Author => "Build";
+        public override string Author => "Build Modified by AntonioFo";
 
         /// <inheritdoc/>
         public override string Name => "WarnSystem";
@@ -41,10 +38,10 @@ namespace WarnSystem
         public override string Prefix => "WarnSystem";
 
         /// <inheritdoc/>
-        public override Version Version { get; } = new(1, 0, 0);
+        public override Version Version { get; } = new(1, 2, 0);
 
         /// <inheritdoc/>
-        public override Version RequiredExiledVersion { get; } = new(8, 12, 2);
+        public override Version RequiredExiledVersion { get; } = new(9, 0, 1);
 
         /// <inheritdoc/>
         public override void OnEnabled()
