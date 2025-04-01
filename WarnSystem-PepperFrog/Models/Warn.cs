@@ -1,34 +1,18 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Warn.cs" company="Build">
-// Copyright (c) Build. All rights reserved.
-// Licensed under the CC BY-SA 3.0 license.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Exiled.API.Features;
 
-namespace WarnSystem.Models
+namespace WarnSystem_PepperFrog.Models
 {
-    using System;
-    using Exiled.API.Features;
-
-    /// <summary>
-    /// Represents a warn issued to a player by a staff member.
-    /// </summary>
     [Serializable]
     public class Warn
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Warn"/> class.
-        /// </summary>
         public Warn()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Warn"/> class.
-        /// </summary>
-        /// <param name="target">The player to be warned.</param>
-        /// <param name="issuer">The player issuing the warn.</param>
-        /// <param name="reason">The reason for the warn.</param>
         public Warn(Player target, Issuer issuer, string reason)
         {
             Date = DateTime.UtcNow;
@@ -39,42 +23,127 @@ namespace WarnSystem.Models
             Reason = reason;
         }
 
-        /// <summary>
-        /// Gets or sets the id of the warn.
-        /// </summary>
         public int Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets the date that the warn was issued.
-        /// </summary>
         public DateTime Date { get; set; }
 
-        /// <summary>
-        /// Gets or sets the id of the user that this warn belongs to.
-        /// </summary>
         public string TargetId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of the user that this warn belongs to.
-        /// </summary>
         public string TargetName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the id of the user that issued this warn.
-        /// </summary>
         public string IssuerId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of the user that issued this warn.
-        /// </summary>
         public string IssuerName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the reason for this warn.
-        /// </summary>
         public string Reason { get; set; }
 
-        /// <inheritdoc />
-        public override string ToString() => $"[{Date:MM/dd/yyyy}] {TargetName} ({TargetId}) | {IssuerName} ({IssuerId}) > {Reason}";
+        private static readonly HttpClient HttpClient = new HttpClient();
+
+        public override string ToString() =>
+            $"[{Date:MM/dd/yyyy}] {TargetName} ({TargetId}) | {IssuerName} ({IssuerId}) > {Reason}";
+
+        public string ApplyWarn()
+        {
+            var postData = new Dictionary<string, string>
+            {
+                { "targetId", TargetId },
+                { "targetName", TargetName },
+                { "issuerId", IssuerId },
+                { "issuerName", IssuerName },
+                { "reason", Reason },
+                { "API_KEY", Plugin.Instance.Config.API_KEY }
+            };
+
+
+            HttpContent content = new FormUrlEncodedContent(postData);
+
+            HttpResponseMessage response =
+                HttpPostRequest(
+                    Plugin.Instance.Config.Botip + ":" + Plugin.Instance.Config.Port + Plugin.Instance.Config.Uri,
+                    content);
+            if (response is not null)
+            {
+                Log.Debug(RetriveString(response.Content));
+                return RetriveString(response.Content);
+            }
+
+            return "The response is null, error on the retrieve of the response";
+        }
+
+        public static List<Warn> GetWarnsOfPlayer(string steamid)
+        {
+            var postData = new Dictionary<string, string>
+            {
+                { "targetId", steamid },
+                { "API_KEY", Plugin.Instance.Config.API_KEY }
+            };
+
+            HttpContent content = new FormUrlEncodedContent(postData);
+
+            HttpResponseMessage response =
+                HttpPostRequest(
+                    Plugin.Instance.Config.Botip + ":" + Plugin.Instance.Config.Port + Plugin.Instance.Config.Uri,
+                    content);
+            if (response is not null)
+            {
+                Log.Debug(RetriveString(response.Content));
+            }
+
+            //todo parse
+            return null;
+        }
+
+        public static string RemoveWarnOfPlayer(string steamid, int index)
+        {
+            var postData = new Dictionary<string, string>
+            {
+                { "targetId", steamid },
+                { "removeId", index.ToString() },
+                { "API_KEY", Plugin.Instance.Config.API_KEY }
+            };
+
+            HttpContent content = new FormUrlEncodedContent(postData);
+
+            HttpResponseMessage response =
+                HttpPostRequest(
+                    Plugin.Instance.Config.Botip + ":" + Plugin.Instance.Config.Port + Plugin.Instance.Config.Uri,
+                    content);
+            if (response is not null)
+            {
+                Log.Debug(RetriveString(response.Content));
+                return RetriveString(response.Content);
+            }
+
+            return "The response is null, error on the retrieve of the response";
+        }
+
+        private static HttpResponseMessage HttpPostRequest(string url, HttpContent content)
+        {
+            try
+            {
+                Task<HttpResponseMessage> response = Task.Run(() => HttpClient.PostAsync(url, content));
+
+                response.Wait();
+
+                return response.Result;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                return null;
+            }
+        }
+
+        private static string RetriveString(HttpContent response)
+        {
+            if (response is null)
+                return string.Empty;
+
+            Task<string> result = Task.Run(response.ReadAsStringAsync);
+
+            result.Wait();
+
+            return result.Result;
+        }
     }
 }

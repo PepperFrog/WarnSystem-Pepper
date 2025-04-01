@@ -1,40 +1,23 @@
-// -----------------------------------------------------------------------
-// <copyright file="Config.cs" company="Build">
-// Copyright (c) Build. All rights reserved.
-// Licensed under the CC BY-SA 3.0 license.
-// </copyright>
-// -----------------------------------------------------------------------
+using System.ComponentModel;
+using Exiled.API.Interfaces;
 
-namespace WarnSystem
+namespace WarnSystem_PepperFrog
 {
-    using System.ComponentModel;
-    using Exiled.API.Features;
-    using Exiled.API.Interfaces;
-
-    /// <inheritdoc />
     public class Config : IConfig
     {
-        /// <inheritdoc/>
         public bool IsEnabled { get; set; } = true;
-        
-        public bool Debug { get; set; }
 
-        /// <summary>
-        /// Gets or sets the path where the database file should be stored.
-        /// </summary>
-        [Description("The path where the database file should be stored.")]
-        public string DatabasePath { get; set; } = Paths.Configs;
+        public bool Debug { get; set; } = true;
 
-        /// <summary>
-        /// Gets or sets the name of the database file.
-        /// </summary>
-        [Description("The name of the database file.")]
-        public string DatabaseFile { get; set; } = "Warn.db";
+        [Description("The api key for the backend.")]
+        public string API_KEY { get; set; } = "API";
 
-        /// <summary>
-        /// Gets or sets the warn to display to a player when they are warned.
-        /// </summary>
-        public Models.Hint WarnedHint { get; set; } = new("Vous avez �t� averti\n{0}", 7, false);
-        
+        public string Botip { get; set; } = "127.0.0.1";
+
+        public uint Port { get; set; } = 8080;
+
+        public string Uri { get; set; } = "/backend";
+
+        public Models.Hint WarnedHint { get; set; } = new("Vous avez été averti\n{0}", 7, false);
     }
 }

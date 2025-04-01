@@ -1,23 +1,16 @@
-﻿using Exiled.API.Features;
-using System;
+﻿using System;
+using Exiled.API.Features;
 
-namespace WarnSystem.Models
+namespace WarnSystem_PepperFrog.Models
 {
     [Serializable]
-    public class Issuer
+    public class Issuer(string userId, string nickname)
     {
-        public string UserId { get; set; }
-        public string Nickname { get; set; }
-        public Issuer(string UserId, string Nickname)
-        {
-            this.UserId = UserId;
-            this.Nickname = Nickname;
-        }
+        public string UserId { get; set; } = userId;
+        public string Nickname { get; set; } = nickname;
 
-        public Issuer(Player player)
+        public Issuer(Player player) : this(player.UserId, player.Nickname)
         {
-            this.UserId = player.UserId;
-            this.Nickname = player.Nickname;
         }
     }
 }

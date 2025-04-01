@@ -1,38 +1,23 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="WarnCommand.cs" company="Build">
-// Copyright (c) Build. All rights reserved.
-// Licensed under the CC BY-SA 3.0 license.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿using System;
+using System.Text;
+using CommandSystem;
+using NorthwoodLib.Pools;
 
-namespace WarnSystem.Commands.RemoteAdmin
+namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
 {
-    using System;
-    using System.Text;
-    using CommandSystem;
-    using NorthwoodLib.Pools;
-
-    /// <inheritdoc />
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class WarnCommand : ParentCommand, IUsageProvider
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WarnCommand"/> class.
-        /// </summary>
         public WarnCommand() => LoadGeneratedCommands();
 
-        /// <inheritdoc />
         public override string Command => "warn";
 
-        /// <inheritdoc />
         public override string[] Aliases => Array.Empty<string>();
 
-        /// <inheritdoc />
         public override string Description => "Manages the warns of players.";
 
-        public string[] Usage => new string[] {"a/add g/get", "playername", "Reason And More" };
+        public string[] Usage => new string[] { "a/add g/get", "playername", "Reason And More" };
 
-        /// <inheritdoc />
         public sealed override void LoadGeneratedCommands()
         {
             RegisterCommand(new AddWarnCommand());
@@ -40,8 +25,8 @@ namespace WarnSystem.Commands.RemoteAdmin
             RegisterCommand(new RemoveWarnCommand());
         }
 
-        /// <inheritdoc />
-        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
+        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender,
+            out string response)
         {
             StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
             stringBuilder.AppendLine("Please specify a valid subcommand! Available:");
