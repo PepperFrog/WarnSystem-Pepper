@@ -16,7 +16,7 @@ namespace WarnSystem_PepperFrog
 
         public uint Port { get; set; } = 8080;
 
-        public string Uri { get; set; } = "/backend";
+        public string Uri { get; set; } = "/backend_end/requestHandler.php";
 
         public Models.Hint WarnedHint { get; set; } = new("Vous avez été averti\n{0}", 7, false);
     }

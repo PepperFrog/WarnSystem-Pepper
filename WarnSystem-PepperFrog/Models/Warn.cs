@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Exiled.API.Features;
+using System.Text.Json;
 
 namespace WarnSystem_PepperFrog.Models
 {
@@ -12,10 +13,9 @@ namespace WarnSystem_PepperFrog.Models
         public Warn()
         {
         }
-
-        public Warn(Player target, Issuer issuer, string reason)
+        
+        public Warn(Id target, Id issuer, string reason)
         {
-            Date = DateTime.UtcNow;
             TargetId = target.UserId;
             TargetName = target.Nickname;
             IssuerId = issuer.UserId;
@@ -84,13 +84,16 @@ namespace WarnSystem_PepperFrog.Models
                 HttpPostRequest(
                     Plugin.Instance.Config.Botip + ":" + Plugin.Instance.Config.Port + Plugin.Instance.Config.Uri,
                     content);
-            if (response is not null)
+            if (response is null)
             {
-                Log.Debug(RetriveString(response.Content));
+                return new List<Warn>();
             }
 
-            //todo parse
-            return null;
+            string stringResp = RetriveString(response.Content);
+            Log.Debug(stringResp);
+            
+            List<Warn> warns = JsonSerializer.Deserialize<List<Warn>>(stringResp);
+            return warns;
         }
 
         public static string RemoveWarnOfPlayer(string steamid, int index)

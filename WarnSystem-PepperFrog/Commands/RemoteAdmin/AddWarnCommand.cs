@@ -48,14 +48,18 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
                 return false;
             }
 
-            Player target = Player.Get(arguments.At(0));
-            if (target == null)
+            Id target;
+            Player ply = Player.Get(arguments.At(0));
+            if (ply == null)
             {
-                response = InvalidPlayerResponse;
-                return false;
+                target = new Id(arguments.At(0), "???", null);
+            }
+            else
+            {
+                target = new Id(ply);
             }
 
-            Issuer issuer;
+            Id issuer;
             try
             {
                 issuer = new(Player.Get(sender));
@@ -63,14 +67,13 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
             catch (Exception)
             {
                 Log.Warn("Adding a warn as the server console is not recommended");
-                issuer = new("00000000000000000@steam", "SERVER CONSOLE");
+                issuer = new("00000000000000000@steam", "SERVER CONSOLE", null);
             }
 
 
             string reason = string.Join(" ", arguments.Skip(1));
             Warn warn = new Warn(target, issuer, reason);
             string succ = warn.ApplyWarn();
-            //todo fix
             Plugin.Instance.Config.WarnedHint?.Display(target, warn.Reason);
             response = string.Format(SuccessResponse, warn);
             return true;

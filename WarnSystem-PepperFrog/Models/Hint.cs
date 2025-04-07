@@ -23,10 +23,10 @@ namespace WarnSystem_PepperFrog.Models
 
         public bool Show { get; set; }
 
-        public void Display(Player player, params object[] format)
+        public void Display(Id player, params object[] format)
         {
-            if (Show)
-                player.ShowHint(format is { Length: > 0 } ? string.Format(Message, format) : Message, Duration);
+            if (Show && player.Player != null)
+                player.Player.ShowHint(format is { Length: > 0 } ? string.Format(Message, format) : Message, Duration);
         }
     }
 }
