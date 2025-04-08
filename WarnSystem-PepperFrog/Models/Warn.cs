@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Exiled.API.Features;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace WarnSystem_PepperFrog.Models
 {
@@ -51,7 +51,7 @@ namespace WarnSystem_PepperFrog.Models
                 { "issuerId", IssuerId },
                 { "issuerName", IssuerName },
                 { "reason", Reason },
-                { "API_KEY", Plugin.Instance.Config.API_KEY }
+                { "API_KEY", Plugin.Instance.Config.APIKey }
             };
 
 
@@ -75,7 +75,7 @@ namespace WarnSystem_PepperFrog.Models
             var postData = new Dictionary<string, string>
             {
                 { "targetId", steamid },
-                { "API_KEY", Plugin.Instance.Config.API_KEY }
+                { "API_KEY", Plugin.Instance.Config.APIKey }
             };
 
             HttpContent content = new FormUrlEncodedContent(postData);
@@ -92,7 +92,7 @@ namespace WarnSystem_PepperFrog.Models
             string stringResp = RetriveString(response.Content);
             Log.Debug(stringResp);
             
-            List<Warn> warns = JsonSerializer.Deserialize<List<Warn>>(stringResp);
+            List<Warn> warns = JsonConvert.DeserializeObject<List<Warn>>(stringResp);
             return warns;
         }
 
@@ -102,7 +102,7 @@ namespace WarnSystem_PepperFrog.Models
             {
                 { "targetId", steamid },
                 { "removeId", index.ToString() },
-                { "API_KEY", Plugin.Instance.Config.API_KEY }
+                { "API_KEY", Plugin.Instance.Config.APIKey }
             };
 
             HttpContent content = new FormUrlEncodedContent(postData);
@@ -133,6 +133,7 @@ namespace WarnSystem_PepperFrog.Models
             catch (Exception e)
             {
                 Log.Error(e.Message);
+                Log.Error(e.StackTrace);
                 return null;
             }
         }

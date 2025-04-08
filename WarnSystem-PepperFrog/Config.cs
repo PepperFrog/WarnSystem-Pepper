@@ -10,7 +10,7 @@ namespace WarnSystem_PepperFrog
         public bool Debug { get; set; } = true;
 
         [Description("The api key for the backend.")]
-        public string API_KEY { get; set; } = "API";
+        public string APIKey { get; set; } = "ZHaksf9673gaoOioa7";
 
         public string Botip { get; set; } = "127.0.0.1";
 
