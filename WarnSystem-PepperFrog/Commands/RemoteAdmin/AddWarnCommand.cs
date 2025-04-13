@@ -73,7 +73,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
 
             string reason = string.Join(" ", arguments.Skip(1));
             Warn warn = new Warn(target, issuer, reason);
-            string succ = warn.ApplyWarn();
+            warn.ApplyWarn();
             Plugin.Instance.Config.WarnedHint?.Display(target, warn.Reason);
             response = string.Format(SuccessResponse, warn);
             return true;

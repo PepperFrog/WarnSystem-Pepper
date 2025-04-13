@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Exiled.API.Features;
+using NorthwoodLib.Pools;
+using MEC;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace WarnSystem_PepperFrog.Models
 {
@@ -13,7 +18,7 @@ namespace WarnSystem_PepperFrog.Models
         public Warn()
         {
         }
-        
+
         public Warn(Id target, Id issuer, string reason)
         {
             TargetId = target.UserId;
@@ -37,117 +42,55 @@ namespace WarnSystem_PepperFrog.Models
 
         public string Reason { get; set; }
 
-        private static readonly HttpClient HttpClient = new HttpClient();
-
         public override string ToString() =>
-            $"[{Date:MM/dd/yyyy}] {TargetName} ({TargetId}) | {IssuerName} ({IssuerId}) > {Reason}";
+            $"{Id}: [{Date:yyyy-MM-ddTHH:mm}] {TargetName} ({TargetId}) | {IssuerName} ({IssuerId}) > {Reason}";
 
-        public string ApplyWarn()
+        public string ToStringPlayer() =>
+            $"{Id}: [{Date:yyyy-MM-ddTHH:mm}] {TargetName} | {IssuerName} > {Reason}";
+
+        public void ApplyWarn()
         {
-            var postData = new Dictionary<string, string>
-            {
-                { "targetId", TargetId },
-                { "targetName", TargetName },
-                { "issuerId", IssuerId },
-                { "issuerName", IssuerName },
-                { "reason", Reason },
-                { "API_KEY", Plugin.Instance.Config.APIKey }
-            };
+            WWWForm form = new WWWForm();
+            form.AddField("action", "insertwarn");
+            form.AddField("targetId", TargetId);
+            form.AddField("targetName", TargetName);
+            form.AddField("issuerId", IssuerId);
+            form.AddField("issuerName", IssuerName);
+            form.AddField("reason", Reason);
+            form.AddField("API_KEY", Plugin.Instance.Config.APIKey);
 
-
-            HttpContent content = new FormUrlEncodedContent(postData);
-
-            HttpResponseMessage response =
-                HttpPostRequest(
-                    Plugin.Instance.Config.Botip + ":" + Plugin.Instance.Config.Port + Plugin.Instance.Config.Uri,
-                    content);
-            if (response is not null)
-            {
-                Log.Debug(RetriveString(response.Content));
-                return RetriveString(response.Content);
-            }
-
-            return "The response is null, error on the retrieve of the response";
+            Timing.RunCoroutine(Plugin.SendPostMessage(form, Plugin.Instance.Config.Url));
         }
 
-        public static List<Warn> GetWarnsOfPlayer(string steamid)
+        public static void GetWarnsOfPlayer(string steamid, Action<List<Warn>> onComplet)
         {
-            var postData = new Dictionary<string, string>
+            if (Regex.IsMatch(steamid, @"(?:7656119\d{10}@steam)|(?:\d{17,19}@discord)"))
             {
-                { "targetId", steamid },
-                { "API_KEY", Plugin.Instance.Config.APIKey }
-            };
+                string getUrl = Plugin.Instance.Config.Url + "?action=getwarnbyplayer&targetId=" + steamid;
 
-            HttpContent content = new FormUrlEncodedContent(postData);
-
-            HttpResponseMessage response =
-                HttpPostRequest(
-                    Plugin.Instance.Config.Botip + ":" + Plugin.Instance.Config.Port + Plugin.Instance.Config.Uri,
-                    content);
-            if (response is null)
-            {
-                return new List<Warn>();
-            }
-
-            string stringResp = RetriveString(response.Content);
-            Log.Debug(stringResp);
-            
-            List<Warn> warns = JsonConvert.DeserializeObject<List<Warn>>(stringResp);
-            return warns;
-        }
-
-        public static string RemoveWarnOfPlayer(string steamid, int index)
-        {
-            var postData = new Dictionary<string, string>
-            {
-                { "targetId", steamid },
-                { "removeId", index.ToString() },
-                { "API_KEY", Plugin.Instance.Config.APIKey }
-            };
-
-            HttpContent content = new FormUrlEncodedContent(postData);
-
-            HttpResponseMessage response =
-                HttpPostRequest(
-                    Plugin.Instance.Config.Botip + ":" + Plugin.Instance.Config.Port + Plugin.Instance.Config.Uri,
-                    content);
-            if (response is not null)
-            {
-                Log.Debug(RetriveString(response.Content));
-                return RetriveString(response.Content);
-            }
-
-            return "The response is null, error on the retrieve of the response";
-        }
-
-        private static HttpResponseMessage HttpPostRequest(string url, HttpContent content)
-        {
-            try
-            {
-                Task<HttpResponseMessage> response = Task.Run(() => HttpClient.PostAsync(url, content));
-
-                response.Wait();
-
-                return response.Result;
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.Message);
-                Log.Error(e.StackTrace);
-                return null;
+                Timing.RunCoroutine(Plugin.SendGetMessage(getUrl, onComplet));
             }
         }
 
-        private static string RetriveString(HttpContent response)
+        public static void RemoveWarnOfPlayer(int index)
         {
-            if (response is null)
-                return string.Empty;
+            WWWForm form = new WWWForm();
+            form.AddField("action", "removewarn");
+            form.AddField("removeId", index.ToString());
+            form.AddField("API_KEY", Plugin.Instance.Config.APIKey);
 
-            Task<string> result = Task.Run(response.ReadAsStringAsync);
+            Timing.RunCoroutine(Plugin.SendPostMessage(form, Plugin.Instance.Config.Url));
+        }
 
-            result.Wait();
+        public static string GenerateWarnList(List<Warn> warns, bool toPlayer)
+        {
+            StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
+            foreach (Warn warn in warns)
+            {
+                stringBuilder.AppendLine(toPlayer ? warn.ToStringPlayer() : warn.ToString());
+            }
 
-            return result.Result;
+            return StringBuilderPool.Shared.ToStringReturn(stringBuilder).TrimEnd('\n');
         }
     }
 }

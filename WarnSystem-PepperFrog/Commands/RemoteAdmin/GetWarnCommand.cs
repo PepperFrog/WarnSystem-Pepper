@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
-using NorthwoodLib.Pools;
 using WarnSystem_PepperFrog.Models;
 
 namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
@@ -42,12 +39,6 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
         public string PermissionDeniedResponse { get; set; } = Plugin.Instance.Translation.PermissionDeniedResponse ??
                                                                "You do not have permission to use this command.";
 
-        [Description(
-            "The format to use when listing the warns of players. Available placeholders: {0}:Id, {1}:Date, {2}:IssuerName, {3}:IssuerId, {4}:Reason")]
-        public string WarnListFormat { get; set; } = "{0}: [{1}] {2} ({3}) > {4}";
-
-        [Description("The date format.")] public string DateFormat { get; set; } = "dd-MM-yyyy-HH:mm";
-
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission(RequiredPermission))
@@ -62,34 +53,34 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
                 return false;
             }
 
-            List<Warn> warns = Warn.GetWarnsOfPlayer(arguments.At(0));
-            if (warns.Count == 0)
+            Warn.GetWarnsOfPlayer(arguments.At(0), (warns) =>
             {
-                response = NoMatchesResponse;
-                return false;
-            }
+                string finalResponse;
 
-            Player player = Player.Get(arguments.At(0));
+                if (warns == null)
+                {
+                    finalResponse = "Something went wrong. Try again later.";
+                }
+                else if (warns.Count == 0)
+                {
+                    finalResponse = NoMatchesResponse;
+                }
+                else
+                {
+                    Player player = Player.Get(arguments.At(0));
+                    finalResponse = player != null
+                        ? string.Format(OnlineMatchResponse, player.Nickname, player.UserId, Warn.GenerateWarnList(warns, false),
+                            warns.Count)
+                        : string.Format(OfflineMatchResponse, Warn.GenerateWarnList(warns, false), warns.Count);
+                }
 
-            response = Player.Get(arguments.At(0)) != null
-                ? string.Format(OnlineMatchResponse, player.Nickname, player.UserId, GenerateWarnList(warns),
-                    warns.Count)
-                : string.Format(OfflineMatchResponse, GenerateWarnList(warns), warns.Count);
+                sender.Respond(finalResponse, true);
+            });
 
+
+            response = "Request sent";
             return true;
         }
-
-        private string GenerateWarnList(List<Warn> warns)
-        {
-            StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
-            for (int i = 0; i < warns.Count; i++)
-            {
-                Warn warn = warns[i];
-                stringBuilder.AppendLine(string.Format(WarnListFormat, i + 1, warn.Date.ToString(DateFormat),
-                    warn.IssuerName, warn.IssuerId, warn.Reason));
-            }
-
-            return StringBuilderPool.Shared.ToStringReturn(stringBuilder).TrimEnd('\n');
-        }
+        
     }
 }

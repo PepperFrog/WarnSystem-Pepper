@@ -16,7 +16,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
         public string Description { get; set; } = "Removes a warn from a player.";
 
         [Description("The response to send when the user does not send enough arguments.")]
-        public string UsageResponse { get; set; } = "Usage: warn remove <userId> <warnId>";
+        public string UsageResponse { get; set; } = "Usage: warn remove <warnId>";
 
         [Description("The response to send when an invalid warn id is specified.")]
         public string InvalidIdResponse { get; set; } = "Invalid warn id.";
@@ -44,34 +44,22 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
                 return false;
             }
 
-            if (arguments.Count < 2)
+            if (arguments.Count < 1)
             {
                 response = UsageResponse;
                 return false;
             }
 
-            if (!int.TryParse(arguments.At(1), out int id))
+            if (!int.TryParse(arguments.At(0), out int id))
             {
                 response = InvalidIdResponse;
                 return false;
             }
-
-            List<Warn> warns = Warn.GetWarnsOfPlayer(arguments.At(0));
-            if (warns.Count == 0)
-            {
-                response = NoWarnsFound;
-                return false;
-            }
-
-            if (id <= 0 || id > warns.Count)
-            {
-                response = InvalidIdResponse;
-                return false;
-            }
-
-            Warn toRemove = warns[id - 1];
-            Warn.RemoveWarnOfPlayer(arguments.At(0), id);
-            response = string.Format(SuccessResponse, toRemove);
+            
+            //TODO GET THE WARN BEFORE REMOVING IT
+            
+            Warn.RemoveWarnOfPlayer(id);
+            response = SuccessResponse;
             return true;
         }
     }

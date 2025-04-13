@@ -8,16 +8,11 @@ namespace WarnSystem_PepperFrog
         public bool IsEnabled { get; set; } = true;
 
         public bool Debug { get; set; } = true;
-
-        [Description("The api key for the backend.")]
+       
         public string APIKey { get; set; } = "ZHaksf9673gaoOioa7";
 
-        public string Botip { get; set; } = "127.0.0.1";
+        public string Url { get; set; } = "https://gregtech.dedyn.io/backend_warn/requestHandler.php";
 
-        public uint Port { get; set; } = 8080;
-
-        public string Uri { get; set; } = "/backend_end/requestHandler.php";
-
-        public Models.Hint WarnedHint { get; set; } = new("Vous avez été averti\n{0}", 7, false);
+        public Models.Hint WarnedHint { get; set; } = new("Vous avez été averti\n{0}", 5, true);
     }
 }
