@@ -72,6 +72,13 @@ namespace WarnSystem_PepperFrog.Models
             }
         }
 
+        public static void GetWarnsById(int id, Action<List<Warn>> onComplet)
+        {
+            string getUrl = Plugin.Instance.Config.Url + "?action=getwarnbyplayer&id=" + id;
+
+            Timing.RunCoroutine(Plugin.SendGetMessage(getUrl, onComplet));
+        }
+
         public static void RemoveWarnOfPlayer(int index)
         {
             WWWForm form = new WWWForm();
