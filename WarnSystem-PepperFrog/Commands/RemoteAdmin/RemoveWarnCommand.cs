@@ -28,7 +28,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
 
         [Description("The response to send when a warn is successfully deleted.")]
         public string SuccessResponse { get; set; } =
-            Plugin.Instance.Translation.SuccessResponseRemove ?? "Deleted Warn:\n{0}";
+            Plugin.Instance.Translation.SuccessResponseRemove ?? "Deleted Warn:";
 
         [Description("The permission required to use this command.")]
         public string RequiredPermission { get; set; } = "ws.remove";
@@ -43,9 +43,6 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
 
         [Description(
             "The response to send to the user when an match has been found. Available placeholders: {0}:TargetName, {1}:TargetId, {2}:WarnList, {3}:WarnCount")]
-        public string OnlineMatchResponse { get; set; } = Plugin.Instance.Translation.OnlineMatchResponse ??
-                                                          "Warn to remove for {0} ({1})\n{2}\n{3} matches found.";
-
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission(RequiredPermission))
@@ -80,7 +77,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
                 }
                 else
                 {
-                    finalResponse = string.Format(OnlineMatchResponse, Warn.GenerateWarnList(warns, false));
+                    finalResponse = Warn.GenerateWarnList(warns, false);
                     Warn.RemoveWarnOfPlayer(id);
                 }
 

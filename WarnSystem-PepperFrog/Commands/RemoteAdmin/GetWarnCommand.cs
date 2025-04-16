@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using CommandSystem;
 using Exiled.API.Features;
 using Exiled.Permissions.Extensions;
@@ -17,7 +18,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
 
         [Description("The response to send when no player is specified.")]
         public string ProvideArgumentResponse { get; set; } =
-            Plugin.Instance.Translation.ProvideArgumentResponse ?? "Please provide a player name.";
+            Plugin.Instance.Translation.ProvideArgumentResponse ?? "Please provide a player name or steamid.";
 
         [Description("The response to send when no matches are found.")]
         public string NoMatchesResponse { get; set; } =
@@ -53,7 +54,25 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
                 return false;
             }
 
-            Warn.GetWarnsOfPlayer(arguments.At(0), (warns) =>
+            string pid;
+
+            Player ply = Player.Get(arguments.At(0));
+            if (ply is null)
+            {
+                if (!Regex.IsMatch(arguments.At(0), @"(?:7656119\d{10}@steam)|(?:\d{17,19}@discord)"))
+                {
+                    response = ProvideArgumentResponse;
+                    return false;
+                }
+
+                pid = arguments.At(0);
+            }
+            else
+            {
+                pid = ply.UserId;
+            }
+
+            Warn.GetWarnsOfPlayer(pid, (warns) =>
             {
                 string finalResponse;
 
@@ -69,7 +88,8 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
                 {
                     Player player = Player.Get(arguments.At(0));
                     finalResponse = player != null
-                        ? string.Format(OnlineMatchResponse, player.Nickname, player.UserId, Warn.GenerateWarnList(warns, false),
+                        ? string.Format(OnlineMatchResponse, player.Nickname, player.UserId,
+                            Warn.GenerateWarnList(warns, false),
                             warns.Count)
                         : string.Format(OfflineMatchResponse, Warn.GenerateWarnList(warns, false), warns.Count);
                 }
@@ -81,6 +101,5 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
             response = "Request sent";
             return true;
         }
-        
     }
 }

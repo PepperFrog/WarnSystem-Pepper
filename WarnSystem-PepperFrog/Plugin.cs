@@ -50,16 +50,15 @@ namespace WarnSystem_PepperFrog
             }
             else
             {
-                Log.Debug(webRequest.downloadHandler.text);    
+                Log.Debug(webRequest.downloadHandler.text);
             }
         }
 
         public static IEnumerator<float> SendGetMessage(string url, Action<List<Warn>> callback)
         {
             using UnityWebRequest webRequest = UnityWebRequest.Get(url);
-            
-            
-            yield return Timing.WaitUntilDone(webRequest.SendWebRequest()); 
+
+            yield return Timing.WaitUntilDone(webRequest.SendWebRequest());
 
             if (webRequest.result != UnityWebRequest.Result.Success)
             {

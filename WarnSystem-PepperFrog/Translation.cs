@@ -15,11 +15,11 @@ namespace WarnSystem_PepperFrog
 
         public string NoWarnsFound { get; set; } = "Aucun warn trouvé pour ce joueur.";
 
-        public string ProvideArgumentResponse { get; set; } = "Veuillez donner un nom de joueur.";
+        public string ProvideArgumentResponse { get; set; } = "Veuillez donner un nom de joueur ou steamid.";
 
-        public string SuccessResponseRemove { get; set; } = "Warn suprimé:\n{0}";
+        public string SuccessResponseRemove { get; set; } = "Warn suprimé:";
 
-        public string SuccessResponseAdd { get; set; } = "Warn ajouté:\n{0}";
+        public string SuccessResponseAdd { get; set; } = "Warn ajouté:";
 
         public string OfflineMatchResponse { get; set; } = "Occurence hors-ligne trouvé.\n{0}\n{1} occurences trouvé.";
 

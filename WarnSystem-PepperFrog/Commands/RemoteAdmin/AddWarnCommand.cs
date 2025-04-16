@@ -25,7 +25,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
 
         [Description("The response to send when a warn is successfully added.")]
         public string SuccessResponse { get; set; } =
-            Plugin.Instance.Translation.SuccessResponseAdd ?? "Warn added:\n{0}";
+            Plugin.Instance.Translation.SuccessResponseAdd ?? "Warn added:";
 
         [Description("The permission required to use this command.")]
         public string RequiredPermission { get; set; } = "ws.add";
@@ -75,7 +75,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
             Warn warn = new Warn(target, issuer, reason);
             warn.ApplyWarn();
             Plugin.Instance.Config.WarnedHint?.Display(target, warn.Reason);
-            response = string.Format(SuccessResponse, warn);
+            response = SuccessResponse + "\n" + warn;
             return true;
         }
     }

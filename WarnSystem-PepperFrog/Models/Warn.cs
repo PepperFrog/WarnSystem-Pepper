@@ -74,7 +74,8 @@ namespace WarnSystem_PepperFrog.Models
 
         public static void GetWarnsById(int id, Action<List<Warn>> onComplet)
         {
-            string getUrl = Plugin.Instance.Config.Url + "?action=getwarnbyplayer&id=" + id;
+            string getUrl = Plugin.Instance.Config.Url + "?action=getwarnbyid&id=" + id;
+            Log.Debug(getUrl);
 
             Timing.RunCoroutine(Plugin.SendGetMessage(getUrl, onComplet));
         }
@@ -91,13 +92,13 @@ namespace WarnSystem_PepperFrog.Models
 
         public static string GenerateWarnList(List<Warn> warns, bool toPlayer)
         {
-            StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
+            string stringBuilder = "";
             foreach (Warn warn in warns)
             {
-                stringBuilder.AppendLine(toPlayer ? warn.ToStringPlayer() : warn.ToString());
+                stringBuilder += (toPlayer ? warn.ToStringPlayer() : warn.ToString()) + "\n";
             }
 
-            return StringBuilderPool.Shared.ToStringReturn(stringBuilder).TrimEnd('\n');
+            return stringBuilder;
         }
     }
 }
