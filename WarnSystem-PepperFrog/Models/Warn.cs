@@ -43,10 +43,10 @@ namespace WarnSystem_PepperFrog.Models
         public string Reason { get; set; }
 
         public override string ToString() =>
-            $"{Id}: [{Date:yyyy-MM-ddTHH:mm}] {TargetName} ({TargetId}) | {IssuerName} ({IssuerId}) > {Reason}";
+            $"{(Id != 0 ? Id : "")}: [{Date:yyyy-MM-ddTHH:mm}] {TargetName} ({TargetId}) | {IssuerName} ({IssuerId}) > {Reason}";
 
         public string ToStringPlayer() =>
-            $"{Id}: [{Date:yyyy-MM-ddTHH:mm}] {TargetName} | {IssuerName} > {Reason}";
+            $"{(Id != 0 ? Id : "")}: [{Date:yyyy-MM-ddTHH:mm}] {TargetName} | {IssuerName} > {Reason}";
 
         public void ApplyWarn()
         {
