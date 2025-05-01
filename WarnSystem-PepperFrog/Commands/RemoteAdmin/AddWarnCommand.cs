@@ -15,30 +15,15 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
         public string[] Aliases { get; set; } = { "a" };
 
         public string Description { get; set; } = "Adds a warn to a player.";
-
-        [Description("The response to send when the user does not send enough arguments.")]
         public string UsageResponse { get; set; } = "Usage: warn add <player> <reason>";
-
-        [Description("The response to send when an invalid player is specified.")]
-        public string InvalidPlayerResponse { get; set; } =
-            Plugin.Instance.Translation.InvalidPlayerResponse ?? "Player not found.";
-
-        [Description("The response to send when a warn is successfully added.")]
-        public string SuccessResponse { get; set; } =
-            Plugin.Instance.Translation.SuccessResponseAdd ?? "Warn added:";
-
-        [Description("The permission required to use this command.")]
         public string RequiredPermission { get; set; } = "ws.add";
 
-        [Description("The response to send to the user when they lack the required permission.")]
-        public string PermissionDeniedResponse { get; set; } = Plugin.Instance.Translation.PermissionDeniedResponse ??
-                                                               "You do not have permission to use this command.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission(RequiredPermission))
             {
-                response = PermissionDeniedResponse;
+                response = Plugin.Instance.Translation.PermissionDeniedResponse;
                 return false;
             }
 
@@ -75,7 +60,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
             Warn warn = new Warn(target, issuer, reason);
             warn.ApplyWarn();
             Plugin.Instance.Config.WarnedHint?.Display(target, warn.Reason);
-            response = SuccessResponse + "\n" + warn;
+            response = Plugin.Instance.Translation.SuccessResponseAdd + "\n" + warn;
             return true;
         }
     }

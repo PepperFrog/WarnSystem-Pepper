@@ -15,39 +15,14 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
         public string[] Aliases { get; set; } = { "r" };
 
         public string Description { get; set; } = "Removes a warn from a player.";
-
-        [Description("The response to send when the user does not send enough arguments.")]
         public string UsageResponse { get; set; } = "Usage: warn remove <warnId>";
-
-        [Description("The response to send when an invalid warn id is specified.")]
-        public string InvalidIdResponse { get; set; } = "Invalid warn id.";
-
-        [Description("The response to send when no warns are found for the user specified.")]
-        public string NoWarnsFound { get; set; } =
-            Plugin.Instance.Translation.NoWarnsFound ?? "No warns found for the specified user.";
-
-        [Description("The response to send when a warn is successfully deleted.")]
-        public string SuccessResponse { get; set; } =
-            Plugin.Instance.Translation.SuccessResponseRemove ?? "Deleted Warn:";
-
-        [Description("The permission required to use this command.")]
         public string RequiredPermission { get; set; } = "ws.remove";
 
-        [Description("The response to send when no matches are found.")]
-        public string NoMatchesResponse { get; set; } =
-            Plugin.Instance.Translation.NoMatchesResponse ?? "No matches found.";
-
-        [Description("The response to send to the user when they lack the required permission.")]
-        public string PermissionDeniedResponse { get; set; } = Plugin.Instance.Translation.PermissionDeniedResponse ??
-                                                               "You do not have permission to use this command.";
-
-        [Description(
-            "The response to send to the user when an match has been found. Available placeholders: {0}:TargetName, {1}:TargetId, {2}:WarnList, {3}:WarnCount")]
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission(RequiredPermission))
             {
-                response = PermissionDeniedResponse;
+                response = Plugin.Instance.Translation.PermissionDeniedResponse;
                 return false;
             }
 
@@ -59,7 +34,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
 
             if (!int.TryParse(arguments.At(0), out int id))
             {
-                response = InvalidIdResponse;
+                response = Plugin.Instance.Translation.InvalidPlayerResponse;
                 return false;
             }
 
@@ -73,7 +48,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
                 }
                 else if (warns.Count == 0)
                 {
-                    finalResponse = NoMatchesResponse;
+                    finalResponse = Plugin.Instance.Translation.NoMatchesResponse;
                 }
                 else
                 {
@@ -84,7 +59,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
                 sender.Respond(finalResponse, true);
             });
 
-            response = SuccessResponse;
+            response = Plugin.Instance.Translation.SuccessResponseRemove;
             return true;
         }
     }

@@ -15,15 +15,6 @@ namespace WarnSystem_PepperFrog.Commands.Client
 
         public string Description { get; set; } = "Displays warns issued to you.";
 
-        [Description("The response to send when no matches are found.")]
-        public string NoMatchesResponse { get; set; } =
-            Plugin.Instance.Translation.NoMatchesResponse ?? "No matches found.";
-
-        [Description(
-            "The response to send to the user when a match has been found. Available placeholders: {0}:WarnList, {1}:WarnCount")]
-        public string MatchesResponse { get; set; } =
-            Plugin.Instance.Translation.MatchesResponse ?? "\n{0}\n{1} warns on record.";
-
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);
@@ -43,11 +34,12 @@ namespace WarnSystem_PepperFrog.Commands.Client
                 }
                 else if (warns.Count == 0)
                 {
-                    finalResponse = NoMatchesResponse;
+                    finalResponse = Plugin.Instance.Translation.NoMatchesResponse;
                 }
                 else
                 {
-                    finalResponse = string.Format(MatchesResponse, Warn.GenerateWarnList(warns, true), warns.Count);
+                    finalResponse = string.Format(Plugin.Instance.Translation.MatchesResponse,
+                        Warn.GenerateWarnList(warns, true), warns.Count);
                 }
 
                 player.SendConsoleMessage(finalResponse, "green");
