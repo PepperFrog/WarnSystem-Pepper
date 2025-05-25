@@ -43,10 +43,10 @@ namespace WarnSystem_PepperFrog.Models
         public string Reason { get; set; }
 
         public override string ToString() =>
-            $"{(Id != 0 ? Id : "")}: [{Date:yyyy-MM-ddTHH:mm}] {TargetName} ({TargetId}) | {IssuerName} ({IssuerId}) > {Reason}";
+            $"{(Id != 0 ? Id : "")}: [{Date:yyyy-MM-ddTHH:mm}] {TargetName} ({TargetId}) | {IssuerName} ({IssuerId})\n {Reason}";
 
         public string ToStringPlayer() =>
-            $"{(Id != 0 ? Id : "")}: [{Date:yyyy-MM-ddTHH:mm}] {TargetName} | {IssuerName} > {Reason}";
+            $"[{Date:yyyy-MM-ddTHH:mm}] {TargetName} | {IssuerName}\n {Reason}";
 
         public void ApplyWarn()
         {
@@ -67,7 +67,7 @@ namespace WarnSystem_PepperFrog.Models
             if (Regex.IsMatch(steamid, @"(?:7656119\d{10}@steam)|(?:\d{17,19}@discord)"))
             {
                 string getUrl = Plugin.Instance.Config.Url + "?action=getwarnbyplayer&targetId=" + steamid;
-
+                Log.Debug(getUrl);
                 Timing.RunCoroutine(Plugin.SendGetMessage(getUrl, onComplet));
             }
         }

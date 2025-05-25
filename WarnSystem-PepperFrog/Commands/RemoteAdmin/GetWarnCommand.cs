@@ -49,7 +49,7 @@ namespace WarnSystem_PepperFrog.Commands.RemoteAdmin
             {
                 pid = ply.UserId;
             }
-
+            Log.Info(pid);
             Warn.GetWarnsOfPlayer(pid, (warns) =>
             {
                 string finalResponse;
